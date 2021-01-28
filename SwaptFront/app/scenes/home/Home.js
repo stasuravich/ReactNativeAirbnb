@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Text, View, Button, ActivityIndicator, Alert} from 'react-native';
 import Explore from '../../components/Explore'
 import Inbox from '../../components/Inbox'
-import Profile from '../../components/Profile'
+import MyProfile from '../../components/MyProfile'
 import Settings from '../../components/Settings'
 import Trips from '../../components/Trips'
 import { NavigationContainer } from '@react-navigation/native'
@@ -43,7 +43,7 @@ export default function Home(props) {
           >
             <Tab.Screen name='Explore' component={Explore} />
             <Tab.Screen name='Inbox' component={Inbox} />
-            <Tab.Screen name='Profile' children={()=><Profile navigate={navigate}/>} />
+            <Tab.Screen name='Profile' children={()=><MyProfile navigate={navigate}/>} />
             <Tab.Screen name='Settings' children={()=><Settings navigate={navigate}/>}/>
             <Tab.Screen name='Trips' component={Trips} />
           </Tab.Navigator>
