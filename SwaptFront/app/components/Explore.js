@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { Text, View, ScrollView, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { Text, View, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
 import {SearchBar} from 'react-native-elements'
 import { StyleSheet } from 'react-native'
 import laPhoto from '../photos/sterling-davis-4iXagiKXn3Y-unsplash.jpg'
@@ -11,6 +11,7 @@ import axios from 'axios'
 import Profile from './Profile'
 import * as c from '../constants'
 import { useAuth } from "../providers/auth"
+import ProfDesc from './ProfDesc'
 
 import Stars from 'react-native-stars'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -94,41 +95,6 @@ export default function Explore() {
 export function ShowProfiles(props){
   const [profSelected, setProfSelected] = useState()
 
-  const reviews = [
-    { index: 0,
-      name: 'Chris Beybooty',
-      stars: 5,
-      desc: '"Great place!"' },
-    { index: 1,
-      name: 'Connor Castillo',
-      stars: 4,
-      desc: '"This place slaps"' },
-    { index: 2,
-      name: 'Dakota Diel',
-      stars: 5,
-      desc: '"Awesome aoartment, really liked the area"' },
-    { index: 3,
-      name: 'Celeste',
-      stars: 2.5,
-      desc: '"Didnt really like this spot, good guy though"'}
-  ]
-
-  const renderCarousel = ({item}) => {
-    return (
-      <View>
-        <Stars
-          default={item.stars}
-          count={5}
-          half={true}
-          fullStar={<Icon name={'star'} style={[styles.myStarStyle]}/>}
-          emptyStar={<Icon name={'star-outline'} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
-          halfStar={<Icon name={'star-half-full'} style={[styles.myStarStyle]}/>}
-        />
-        <Text style={styles.textRev}>{ item.desc }</Text>
-      </View>
-    )
-  }
-
   return(
     <View style = {styles.page}>
       {props.profiles[0]==='n' ? <Text>{props.profiles}</Text> :
@@ -143,16 +109,7 @@ export function ShowProfiles(props){
       /> :
       <ScrollView style = {styles.page}>
         <Profile user = {profSelected} picker = {null} />
-        <Text style = {styles.cityTitle}>{profSelected.city}</Text>
-        <Image style = {styles.image} source = {apt} />
-        <Image style = {styles.image} source = {apt1} />
-
-        <Carousel
-          data={reviews}
-          renderItem={renderCarousel}
-          sliderWidth={Dimensions.get('window').width}
-          itemWidth={Dimensions.get('window').width/1.5}
-        />
+        <ProfDesc user = {profSelected} />
       </ScrollView>
       }
     </View>

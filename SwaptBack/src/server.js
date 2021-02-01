@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require("passport");
 const path = require("path");
+const Users = require('./models/user');
+
 
 // Setting up port
 const connUri = process.env.MONGO_LOCAL_CONN_URL;
@@ -34,9 +36,11 @@ app.set('view engine', 'jade');
 mongoose.promise = global.Promise;
 mongoose.connect(connUri, { useNewUrlParser: true , useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false});
 
-const connection = mongoose.connection;
-connection.once('open', () => console.log('MongoDB --  database connection established successfully!'));
-connection.on('error', (err) => {
+const connect = mongoose.connection;
+connect.once('open', () => {
+  console.log('MongoDB --  database connection established successfully!');
+})
+connect.on('error', (err) => {
     console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
     process.exit();
 });
@@ -50,6 +54,23 @@ require("./middlewares/jwt")(passport);
 //Configure Route
 require('./routes/index')(app);
 
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", ()=>{
+    console.log("Disconnected")
+  })
+  socket.on("chat message", function(msg) {
+    console.log("message: "  +  msg);
+    io.emit("received", {message: msg});
+
+    //let user = await Users.findByIdAndUpdate(id, { message: msg });
+  
+
+  })
+});
 
 //=== 5 - START SERVER
-app.listen(PORT, () => console.log('Server running on http://localhost:'+PORT+'/'));
+server.listen(PORT, () => console.log('Server running on http://localhost:'+PORT+'/'));

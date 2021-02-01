@@ -66,7 +66,16 @@ const UserSchema = new mongoose.Schema({
     city: {
         type: String,
         required: 'Your password is required'
-    }
+    },
+
+    message: {
+      type: String
+    },
+
+    sender: {
+      type: String
+    },
+    
 }, {timestamps: true});
 
 
